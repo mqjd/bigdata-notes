@@ -1,0 +1,21 @@
+{
+  "name": "bigdata-notes",
+  "version": "1.0.0",
+  "description": "大数据学习",
+  "main": "index.js",
+  "scripts": {
+    "dev": "docz dev",
+    "build": "docz build",
+    "serve": "docz build && docz serve"
+  },
+  "author": "QiangMa",
+  "license": "ISC",
+  "dependencies": {
+    "docz": "^2.3.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@material-ui/core": "^4.9.11"
+  }
+}

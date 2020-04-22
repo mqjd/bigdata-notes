@@ -1,0 +1,68 @@
+{
+  "config": {
+    "title": "大数据学习",
+    "description": "大数据学习",
+    "menu": [],
+    "version": "1.0.0",
+    "repository": null,
+    "native": false,
+    "themeConfig": {
+      "codemirrorTheme": "dracula"
+    },
+    "separator": "-",
+    "htmlContext": {
+      "head": {
+        "links": [
+          {
+            "rel": "stylesheet",
+            "href": "https://codemirror.net/theme/dracula.css"
+          }
+        ]
+      }
+    }
+  },
+  "entries": [
+    {
+      "key": "home.mdx",
+      "value": {
+        "name": "Hello world",
+        "route": "/",
+        "id": "e9760a3ba4a9c7b296119b45537b0977",
+        "filepath": "home.mdx",
+        "fullpath": "D:\\node-workspace\\bigdata-notes\\home.mdx",
+        "link": "",
+        "hidden": false,
+        "slug": "home",
+        "menu": "",
+        "headings": [
+          {
+            "slug": "hello-world",
+            "depth": 1,
+            "value": "Hello world"
+          },
+          {
+            "slug": "material-ui-button",
+            "depth": 3,
+            "value": "Material UI Button"
+          }
+        ]
+      }
+    },
+    {
+      "key": "docs/hbase/local_debug.mdx",
+      "value": {
+        "name": "Hbase 本地debug",
+        "menu": "Hbase",
+        "id": "0b8b625afd9077ca3e70a8431a151de7",
+        "filepath": "docs/hbase/local_debug.mdx",
+        "fullpath": "D:\\node-workspace\\bigdata-notes\\docs\\hbase\\local_debug.mdx",
+        "link": "",
+        "hidden": false,
+        "slug": "docs-hbase-local-debug",
+        "route": "/docs-hbase-local-debug",
+        "headings": []
+      }
+    }
+  ],
+  "props": []
+}
