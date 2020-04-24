@@ -34,7 +34,7 @@ module.exports = [
     ]
   },
   {text: '收藏夹',
-    link: 'bookmark',
+    link: '/bookmark/',
     items: [
       {text: '学习网站', link: '/bookmark/1587645155000/'},
       {text: '学习资源', link: '/bookmark/1587648280000/'},
