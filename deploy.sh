@@ -10,13 +10,10 @@ npm run build
 cd docs/.vuepress/dist
 
 # deploy to github
-echo "xxxxxxxxxxxxxxxxxx  $GITHUB_TOKEN"
 if [ -z "$GITHUB_TOKEN" ]; then
-  echo "xxxxxxxxxxxxxxxxxx no GITHUB_TOKEN"
   msg='deploy'
   githubUrl=git@github.com:mqjd/bigdata-notes.git
 else
-  echo "xxxxxxxxxxxxxxxxxx has GITHUB_TOKEN"
   msg='来自github actions的自动部署'
   githubUrl=https://mqjd:${GITHUB_TOKEN}@github.com/mqjd/bigdata-notes.git
   git config --global user.name "mqjd"
