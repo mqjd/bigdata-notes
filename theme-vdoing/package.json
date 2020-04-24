@@ -1,0 +1,46 @@
+{
+  "name": "vuepress-theme-vdoing",
+  "author": {
+    "name": "Evan Xu"
+  },
+  "bugs": {
+    "url": "https://github.com/xugaoyi/vuepress-theme-vdoing/issues"
+  },
+  "dependencies": {
+    "@vuepress/plugin-active-header-links": "^1.2.0",
+    "@vuepress/plugin-nprogress": "^1.2.0",
+    "@vuepress/plugin-search": "^1.2.0",
+    "docsearch.js": "^2.5.2",
+    "lodash": "^4.17.15",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "vuepress-plugin-container": "^2.0.2",
+    "vuepress-plugin-smooth-scroll": "^0.0.3"
+  },
+  "description": "Vdoing theme for VuePress",
+  "homepage": "https://github.com/xugaoyi/vuepress-theme-vdoing#readme",
+  "keywords": [
+    "documentation",
+    "vue",
+    "vuepress",
+    "generator",
+    "theme",
+    "blog"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "Evan xu",
+      "email": "894072666@qq.com"
+    }
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xugaoyi/vuepress-theme-vdoing.git"
+  },
+  "version": "1.0.0"
+}
