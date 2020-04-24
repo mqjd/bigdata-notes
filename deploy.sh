@@ -11,11 +11,15 @@ cd docs/.vuepress/dist
 
 # deploy to github
 
-msg='来自github actions的自动部署'
-githubUrl=https://mqjd:${GITHUB_TOKEN}@github.com/mqjd/bigdata-notes.git
-git config --global user.name "mqjd"
-git config --global user.email "1378415278@qq.com"
-
+if [ -z "$ACCESS_TOKEN" ]; then
+  msg='deploy'
+  githubUrl=git@github.com:mqjd/bigdata-notes.git
+else
+  msg='来自github actions的自动部署'
+  githubUrl=https://mqjd:${ACCESS_TOKEN}@github.com/mqjd/bigdata-notes.git
+  git config --global user.name "mqjd"
+  git config --global user.email "1378415278@qq.com"
+fi
 git init
 git add -A
 git commit -m "${msg}"
