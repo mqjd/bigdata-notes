@@ -106,6 +106,7 @@ module.exports = {
         }
       ]
     }],
+    'mermaidjs',
     'vuepress-plugin-baidu-autopush', // 百度自动推送
     ['one-click-copy', { // 代码块复制按钮
       copySelector: ['div[class*="language-"] pre', 'div[class*="aside-code"] aside'], // String or Array
