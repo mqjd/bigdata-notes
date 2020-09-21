@@ -3,26 +3,26 @@
     <transition name="fade">
       <div
         title="返回顶部"
-        class="button go-to-top iconfont icon-fanhuidingbu"
+        class="button blur go-to-top iconfont icon-fanhuidingbu"
         v-show="showToTop"
         @click="scrollToTop"
       />
     </transition>
     <div
       title="去评论"
-      class="button go-to-comment iconfont icon-pinglun"
+      class="button blur go-to-comment iconfont icon-pinglun"
       v-show="showCommentBut"
       @click="scrollToComment"
     />
     <div
       title="主题模式"
-      class="button theme-mode-but iconfont icon-zhuti"
+      class="button blur theme-mode-but iconfont icon-zhuti"
       @mouseenter="showModeBox = true"
       @mouseleave="showModeBox = false"
       @click="showModeBox = true"
     >
       <transition name="mode">
-        <ul class="select-box" ref="modeBox" v-show="showModeBox" @click.stop>
+        <ul class="select-box" ref="modeBox" v-show="showModeBox" @click.stop @touchstart.stop>
           <li
           v-for="item in modeList"
           :key="item.KEY"
@@ -77,7 +77,9 @@ export default {
       _scrollTimer: null,
       _textareaEl: null,
       _recordScrollTop: null,
-      COMMENT_SELECTOR: '#vuepress-plugin-comment' // 评论区元素的选择器
+      COMMENT_SELECTOR_1: '#vuepress-plugin-comment', // 评论区元素的选择器1
+      COMMENT_SELECTOR_2: '#valine-vuepress-comment', // 评论区元素的选择器2
+      COMMENT_SELECTOR_3: '.vssue' // 评论区元素的选择器3
     }
   },
   mounted () {
@@ -88,7 +90,6 @@ export default {
       this.scrollTop = this.getScrollTop()
     }, 100))
 
-    this.handleShowCommentBut()
     window.addEventListener('load', () => {
       this.getCommentTop()
     })
@@ -105,6 +106,22 @@ export default {
         }
       }, 100))
     }
+
+    
+    // 移动端对类似:hover效果的处理
+    const buttons = document.querySelectorAll('.buttons .button')
+    for (let i = 0; i < buttons.length; i++) {
+      const button = buttons[i]
+      button.addEventListener('touchstart', function(){
+        button.classList.add('hover')
+      })
+      button.addEventListener('touchend', function(){
+        setTimeout(() => {
+          button.classList.remove('hover')
+        }, 150)
+      })
+    }
+    
   },
   computed: {
     showToTop () {
@@ -129,22 +146,18 @@ export default {
 
     getCommentTop () {
       setTimeout(() => {
-        const commentEl = document.querySelector(this.COMMENT_SELECTOR)
+        let commentEl = document.querySelector(this.COMMENT_SELECTOR_1) || document.querySelector(this.COMMENT_SELECTOR_2) || document.querySelector(this.COMMENT_SELECTOR_3)
         if (commentEl) {
-          this.commentTop = commentEl.offsetTop
-        } else {
-          this.showCommentBut = false
+          this.showCommentBut = this.$frontmatter.comment !== false && this.$frontmatter.home !== true
+          this.commentTop = commentEl.offsetTop - 58
         }
       },500)
     },
 
-    handleShowCommentBut() {
-      this.showCommentBut = this.$frontmatter.comment !== false && this.$frontmatter.home !== true
-    },
 
     scrollToComment() {
       window.scrollTo({ top: this.commentTop, behavior: 'smooth' })
-      this._textareaEl = document.querySelector(this.COMMENT_SELECTOR + ' textarea')
+      this._textareaEl = document.querySelector(this.COMMENT_SELECTOR_1 + ' textarea') || document.querySelector(this.COMMENT_SELECTOR_2 + ' input') || document.querySelector(this.COMMENT_SELECTOR_3 + ' textarea')
       if( this._textareaEl && this.getScrollTop() !== this._recordScrollTop) {
         document.addEventListener("scroll", this._handleListener)
       } else if (this._textareaEl && this.getScrollTop() === this._recordScrollTop) {
@@ -170,8 +183,8 @@ export default {
     }
   },
   watch: {
-    $route() {
-      this.handleShowCommentBut()
+    '$route.path'() {
+      this.showCommentBut = false
       this.getCommentTop()
     }
   }
@@ -180,8 +193,9 @@ export default {
 
 <style lang='stylus'>
   .yellowBorder
-    border: #FFE089 1px solid!important
-    box-shadow 0 0 10px #FFE089!important
+    // border: #FFE089 1px solid!important
+    border-radius 5px
+    box-shadow 0 0 15px #FFE089!important
   .buttons
     position fixed
     right 2rem
@@ -195,29 +209,37 @@ export default {
       height 2.2rem
       line-height 2.2rem
       border-radius 50%
-      box-shadow 0 2px 6px rgba(0,0,0,.25)
+      box-shadow 0 2px 6px rgba(0,0,0,.15)
       margin-top .9rem
       text-align center
       cursor pointer
-      // color var(--textLightenColor)
-      background rgba(255,255,255,.1)
-      &:hover
+      transition all .5s
+      background var(--blurBg)
+      &.hover
+        background $accentColor
+        box-shadow 0 0 15px $accentColor
         &:before
-          color $accentColor
+          color #fff
+      @media (any-hover: hover)
+        &:hover
+          background $accentColor
+          box-shadow 0 0 15px $accentColor
+          &:before
+            color #fff
       .select-box
         margin 0
-        padding .5rem 0
+        padding .8rem 0
         position absolute
         bottom 0rem
         right 1.5rem
-        background var(--bg)
+        background var(--mainBg)
         border 1px solid var(--borderColor)
-        width 100px
-        border-radius 3px
-        box-shadow 0 2px 6px rgba(0,0,0,.25)
+        width 120px
+        border-radius 6px
+        box-shadow 0 0 15px rgba(255,255,255,.2)
         li 
           list-style none
-          line-height 1.8rem
+          line-height 2rem
           font-size .95rem
           &:hover
             color $accentColor

@@ -1,19 +1,29 @@
 @require './config'
 
-$mobileSidebarWidth = $sidebarWidth * 0.95
+$mobileSidebarWidth = $sidebarWidth * 0.9
 
 // narrow desktop / iPad
 @media (max-width: $MQNarrow)
   .sidebar
     font-size 15px
+    
+@media (max-width: $MQMobile)
+  .sidebar
+    width $sidebarWidth * 0.95
+
+@media (min-width: ($MQMobile + 1px)) and (max-width: $MQNarrow)
+  .sidebar
     width $mobileSidebarWidth
-  .page
-    // padding-left $mobileSidebarWidth
+  .theme-container 
+    &.sidebar-open
+      .page
+        padding-left ($mobileSidebarWidth + .8rem)!important
 
 // wide mobile
 @media (max-width: $MQMobile)
   .sidebar
     top 0
+    height 100vh
     padding-top $navbarHeight
     transform translateX(-100%)
     transition transform .2s ease
@@ -39,7 +49,7 @@ $mobileSidebarWidth = $sidebarWidth * 0.95
       border-radius 0
 
 // 侧边栏显示隐藏的适配
-@media (min-width: ($MQMobile + 1px)) // 大于720px时
+@media (min-width: ($MQMobile + 1px)) // 720px
   .theme-container 
     &.sidebar-open
       .sidebar-mask
@@ -49,15 +59,19 @@ $mobileSidebarWidth = $sidebarWidth * 0.95
       .sidebar-button
         left $sidebarWidth
       .page
-        padding-left $sidebarWidth
+        padding-left ($sidebarWidth + .8rem)
+        padding-right .8rem
+    &.have-rightmenu
+      .page
+        padding-right ($rightMenuWidth + .8rem)
     &.no-sidebar
       .page
-        padding-left 0
+        padding-left 0!important
   @media (max-width: $MQNarrow)
     .theme-container
       &.sidebar-open:not(.on-sidebar)
         .sidebar-button
-          $mobileSidebarWidth = $sidebarWidth * 0.75
+          $mobileSidebarWidth = $sidebarWidth * 0.7
           left $mobileSidebarWidth
   .theme-container.no-sidebar
     .sidebar-button

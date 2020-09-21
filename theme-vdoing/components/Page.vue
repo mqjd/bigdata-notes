@@ -3,29 +3,34 @@
     <main class="page">
       <slot name="top" />
       
-      <div class="theme-vdoing-wrapper">
+      <div :class="`theme-vdoing-wrapper ${bgStyle}`" >
         
         <ArticleInfo v-if="isArticle()" />
         <component class="theme-vdoing-content" v-if="pageComponent" :is="pageComponent" />
 
         <div class="content-wrapper">
           <RightMenu v-if="showRightMenu"/>
+          <h1 v-if="showTitle">
+            <img :src="currentBadge" v-if="$themeConfig.titleBadge === false ? false : true">
+            {{this.$page.title}}
+          </h1>
           <Content class="theme-vdoing-content" />
         </div>
+        
 
         <PageEdit />
         <PageNav v-bind="{ sidebarItems }" />
-        <UpdateArticle
-          :length="updateBarConfig && updateBarConfig.onArticle && updateBarConfig.onArticle.length || 3"
-          :moreArticle="updateBarConfig && updateBarConfig.moreArticle"
-          v-if="isShowUpdateBar"
-         />
       </div>
+
+      <UpdateArticle
+        :length="3"
+        :moreArticle="updateBarConfig && updateBarConfig.moreArticle"
+        v-if="isShowUpdateBar"
+      />
 
       <slot name="bottom" />
     </main>
-
-    <Footer />
+  
   </div>
 </template>
 
@@ -35,24 +40,32 @@ import PageNav from '@theme/components/PageNav.vue'
 import ArticleInfo from './ArticleInfo.vue'
 import Catalogue from './Catalogue.vue'
 import UpdateArticle from './UpdateArticle.vue'
-import Timeline from './Timeline.vue'
-import Footer from './Footer.vue'
 import RightMenu from './RightMenu.vue'
 
+import TitleBadgeMixin from '../mixins/titleBadge'
+
 export default {
+  mixins: [TitleBadgeMixin],
   data() {
     return {
       updateBarConfig: null
     }
   },
   props: ['sidebarItems'],
-  components: { PageEdit, PageNav, ArticleInfo, Catalogue, UpdateArticle, Timeline, Footer, RightMenu},
+  components: { PageEdit, PageNav, ArticleInfo, Catalogue, UpdateArticle, RightMenu},
   created() {
     this.updateBarConfig = this.$themeConfig.updateBar
   },
   computed: {
+    bgStyle(){
+      const { contentBgStyle } = this.$themeConfig
+      return contentBgStyle ? 'bg-style-' + contentBgStyle : ''
+    },
     isShowUpdateBar() {
-      return this.updateBarConfig && this.updateBarConfig.onArticle && this.updateBarConfig.onArticle.isShow === false ? false : true
+      return this.updateBarConfig && this.updateBarConfig.showToArticle === false ? false : true 
+    },
+    showTitle() {
+      return !this.$frontmatter.pageComponent
     },
     showRightMenu(){
       return this.$page.headers && (this.$frontmatter && this.$frontmatter.sidebar && this.$frontmatter.sidebar !== false) !== false
@@ -71,60 +84,66 @@ export default {
 
 <style lang="stylus">
 @require '../styles/wrapper.styl'
-@require '../styles/variable.styl'
 
 .page
   padding-bottom 2rem
   display block
+  @media (max-width  $MQMobile)
+    padding-top ($navbarHeight)
+  @media (min-width  $MQMobile)
+    padding-top ($navbarHeight + 1.5rem)
   >*
     @extend $vdoing-wrapper
 
 .theme-vdoing-wrapper
   .content-wrapper
     position relative
+  h1 img
+    margin-bottom -0.2rem
+    max-width 2.2rem
+    max-height 2.2rem
+  
+
+.theme-vdoing-wrapper
+  --linesColor: rgba(50, 0, 0, 0.05)
+  &.bg-style-1 // 方格
+    background-image: linear-gradient(90deg, var(--linesColor) 3%, transparent 3%), linear-gradient(0deg, var(--linesColor) 3%, transparent 3%)
+    background-position: center center
+    background-size: 20px 20px
+  &.bg-style-2 // 横线
+    background-image: repeating-linear-gradient(0, var(--linesColor) 0, var(--linesColor) 1px, transparent 0, transparent 50%);
+    background-size: 30px 30px
+  &.bg-style-3 // 竖线
+    background-image: repeating-linear-gradient(90deg, var(--linesColor) 0, var(--linesColor) 1px, transparent 0, transparent 50%);
+    background-size: 30px 30px
+  &.bg-style-4 // 左斜线
+    background-image: repeating-linear-gradient(-45deg, var(--linesColor) 0, var(--linesColor) 1px, transparent 0, transparent 50%);
+    background-size: 20px 20px
+  &.bg-style-5 // 右斜线
+    background-image: repeating-linear-gradient(45deg, var(--linesColor) 0, var(--linesColor) 1px, transparent 0, transparent 50%);
+    background-size: 20px 20px
+  &.bg-style-6 // 点状
+    background-image: radial-gradient(var(--linesColor) 1px, transparent 1px);
+    background-size: 10px 10px
+
+// 背景纹适应深色模式
+.theme-mode-dark
+  .theme-vdoing-wrapper
+    --linesColor: rgba(125,125,125, 0.05)
 
 /**
  * 右侧菜单的自适应
  */
-@media (min-width: 1680px) // 在大屏时
-  .have-rightmenu // 有右侧菜单时
-    .page
-      .theme-vdoing-wrapper
-        max-width ($contentWidth + $rightMenuWidth)
-      >*:not(.theme-vdoing-wrapper)
-        transform translateX(-($rightMenuWidth / 2))
-
-@media (min-width: 1520px) and (max-width: 1679px)
+@media (min-width: 720px) and (max-width: 1279px)
   .have-rightmenu
-    .page
-      transition: all 0s!important
-      .theme-vdoing-wrapper
-        max-width ($contentWidth + $rightMenuWidth)
-    &.sidebar-open
-      .page >*
-        margin 0 0 0 2rem
-@media (max-width: 1519px)
+    .page 
+      padding-right .8rem!important
+
+@media (max-width: 1279px)
   .right-menu-wrapper
     display none
-@media (min-width: 1520px)
+@media (min-width: 1280px)
   .sidebar .sidebar-sub-headers
     display none
 
-
-// @media (min-width: 1360px) and (max-width: 1519px)
-//   .have-rightmenu
-//     .page
-//       .theme-vdoing-wrapper
-//         max-width ($contentWidth + $rightMenuWidth - 200px)
-//       .theme-vdoing-content,.page-edit,.page-nav,#vuepress-plugin-comment,.article:not(.article-home)
-//         max-width ($contentWidth - 200px)
-//       .right-menu-wrapper
-//         // margin-left ($contentWidth - 180px)
-
-// @media (max-width: 1359px) // 小于等于1359时隐藏右侧锚点菜单
-//   .right-menu-wrapper
-//     display none
-// @media (min-width: 1360px) // 大于等于1360时隐藏左侧锚点菜单
-//   .sidebar .sidebar-sub-headers
-//     display none
 </style>

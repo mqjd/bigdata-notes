@@ -31,16 +31,18 @@
     display inline-block
     position fixed
     left 0
-    top $navbarHeight
+    top ($navbarHeight + 1rem)
     text-align center
     line-height 44px
     margin 5px 8px
     color #888
     border-radius 50%
     padding 0
-    transition left .2s ease
+    transition left  .2s ease
     &:hover
-      box-shadow 0 2px 6px rgba(0,0,0,.15)
+      background $accentColor
+      color #fff
+      box-shadow 0 0 6px $accentColor
     .icon
       display inline
       width 1rem

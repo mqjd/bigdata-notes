@@ -1,5 +1,5 @@
 // 引入字体图标
-@import '//at.alicdn.com/t/font_1678482_suhesk0rdo7.css'
+@import '//at.alicdn.com/t/font_1678482_ggaf73aw0oe.css'
 
 @require './config'
 @require './code'
@@ -7,18 +7,21 @@
 @require './arrow'
 @require './wrapper'
 @require './toc'
+@require './markdown-container'
+
 
 html, body
   padding 0
   margin 0
-  background-color #fff
 
 body
   font-family -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif
   -webkit-font-smoothing antialiased
   -moz-osx-font-smoothing grayscale
+  -webkit-tap-highlight-color transparent
   font-size 16px
   color $textColor
+  background var(--bodyBg)
 
 // 去掉黄色边框
 a,input,button
@@ -29,67 +32,48 @@ a,input,button
     width:6px;
     height:5px;
   ::-webkit-scrollbar-track-piece
-    background-color:rgba(0,0,0,.15);
-    -webkit-border-radius:3px;
+    background-color:rgba(0,0,0,.15)
+    -webkit-border-radius:3px
   ::-webkit-scrollbar-thumb:vertical
     height:5px;
-    background-color:hsla(0,0%,49%,.6);
+    background-color:rgba(0,0,0,.28)
     -webkit-border-radius:3px
   ::-webkit-scrollbar-thumb:horizontal
     width:5px;
-    background-color:hsla(0,0%,49%,.6);
+    background-color:rgba(0,0,0,.28)
     -webkit-border-radius:3px
 
 
-/** 部件样式**/
-// 卡片
-.card-box
+.card-box // 卡片
   border-radius 5px
-  background var(--bg)
-  box-shadow 0 1px 3px 0 rgba(0,0,30,.1), 1px 2px 4px 0 rgba(0,0,0,.1)
+  background var(--mainBg)
+  box-shadow 0 1px 2px 0 rgba(0,0,0,.1)
+  
 
-// 提示框
-// .hover-tip
-//   position relative
-//   &::before,
-//   &::after 
-//     position absolute
-//     left 50%
-//     top 100%
-//     opacity 0
-//     visibility hidden
-//     transform translate3d(0, 20px, 0)
-//     transition all .3s
-//     z-index 999
-//   &::before 
-//     margin 0 0 12px -35px
-//     border-radius 5px
-//     width 70px
-//     height 28px
-//     background-color rgba(#000, .5)
-//     line-height 28px
-//     text-align center
-//     font-size .8rem
-//     color #fff!important
-//     content attr(data-title)
-//   &::after 
-//     margin -10px 0 0 -5px
-//     border 5px solid transparent
-//     border-bottom-color rgba(#000, .5)
-//     width 0
-//     height 0
-//     content ""
-//   &:hover 
-//     &::before,
-//     &::after
-//       opacity 1
-//       visibility visible
-//       transform translate3d(0, 12px, 0)
+.blur // 模糊滤镜
+  backdrop-filter saturate(200%) blur(20px)
+
+.custom-page // 自定义页面
+  min-height calc(100vh - 3.6rem)
+  padding-top $navbarHeight
+  padding-bottom .9rem
+  .theme-vdoing-wrapper
+    margin 0 auto
+
+// 默认的搜索框样式重置
+body .search-box
+  input
+    background-color transparent
+    color var(--textColor)
+    border 1px solid var(--borderColor, #ccc)
+    @media (max-width: $MQNarrow)
+       border-color transparent
+
+
 
 .page
   transition padding .2s ease
-  // padding-left $sidebarWidth
-  padding-left 0
+  padding-left .8rem
 
 .navbar
   position fixed
@@ -98,9 +82,8 @@ a,input,button
   left 0
   right 0
   height $navbarHeight
-  background-color var(--bg)
+  background-color var(--blurBg)
   box-sizing border-box
-  border-bottom 1px solid var(--borderColor)
   box-shadow 0 2px 5px rgba(0,0,0,.06)
 
 .sidebar-mask
@@ -114,7 +97,7 @@ a,input,button
 
 .sidebar
   font-size 16px
-  background-color rgba(220,220,220,.1)
+  background-color var(--sidebarBg)
   width $sidebarWidth
   position fixed
   z-index 13
@@ -126,16 +109,16 @@ a,input,button
   border-right 1px solid var(--borderColor)
   overflow-y auto
   transform translateX(-100%)
-  transition transform .2s ease
+  transition transform .2s
   @media (max-width: $MQMobile)
-    background-color var(--bg)
+    background-color var(--mainBg)
 
 
 {$contentClass}:not(.custom)
   word-wrap break-word
   @extend $wrapper
   > *:first-child
-    margin-top $navbarHeight
+    // margin-top $navbarHeight // 内容第一个元素的top距离
 
   a:hover
     text-decoration underline
@@ -173,7 +156,6 @@ kbd
 
 blockquote
   font-size 1rem
-  color #666
   opacity .75
   border-left .2rem solid rgba(100,100,100,.3)
   margin 1rem 0
@@ -198,7 +180,7 @@ h1, h2, h3, h4, h5, h6
     margin-bottom 0
 
     &:first-child
-      margin-top -1.5rem
+      // margin-top -1.5rem
       margin-bottom 1rem
 
       + p, + pre, + .custom-block
@@ -207,8 +189,19 @@ h1, h2, h3, h4, h5, h6
   &:hover .header-anchor
     opacity: 1
 
+
+// 没有h1标签时
+p,pre,.custom-block
+  {$contentClass}:not(.custom) > &
+      &:first-child
+        margin-top 2rem
+        
+
 h1
   font-size 1.8rem
+  {$contentClass}:not(.custom) > & // 页面内容的首个h1标签隐藏
+    &:first-child
+      display none
 
 h2
   font-size 1.5rem
@@ -260,7 +253,7 @@ th, td
     word-break break-all
 
 .theme-container
-  background var(--bg)
+  // background var(--mainBg)
   color var(--textColor)
   min-height 100vh
   &.sidebar-open

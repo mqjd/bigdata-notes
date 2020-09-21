@@ -243,3 +243,45 @@ function resolveItem (item, pages, base, groupDepth = 1) {
     }
   }
 }
+
+
+// 类型判断
+export function type(o){
+  const s = Object.prototype.toString.call(o)
+  return s.match(/\[object (.*?)\]/)[1].toLowerCase()
+}
+
+// 日期格式化(只获取年月日)
+export function dateFormat(date) {
+  if (!(date instanceof Date)) {
+    date = new Date(date)
+  }
+  return `${date.getUTCFullYear()}-${zero(date.getUTCMonth()+1)}-${zero(date.getUTCDate())}`
+}
+
+// 小于10补0
+export function zero(d){
+  return d.toString().padStart(2,'0')
+}
+
+// 获取时间的时间戳
+export function getTimeNum (post) {
+  let dateStr = post.frontmatter.date || post.lastUpdated
+  let date = new Date(dateStr)
+  if (date == "Invalid Date") { // 修复new Date()在Safari下出现Invalid Date的问题
+    date = new Date(dateStr.replace(/-/g, '/'))
+  }
+  return date.getTime()
+}
+
+// 比对时间
+export function compareDate (a, b) {
+  return getTimeNum(b) - getTimeNum(a)
+}
+
+// 将特殊符号编码（应用于url）
+export function encodeUrl(str) {
+  str = str + ''
+  str = str.replace(/ |((?=[\x21-\x7e]+)[^A-Za-z0-9])/g, '-')
+  return str
+}

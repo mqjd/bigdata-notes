@@ -42,5 +42,13 @@ module.exports = [
     ]
   },
   {text: '关于', link: '/about/'},
-  {text: '时间轴', link: '/timeline/'},
+  {
+    text: '索引',
+    link: '/archives/',
+    items: [
+      {text: '分类', link: '/categories/'},
+      {text: '标签', link: '/tags/'},
+      {text: '归档', link: '/archives/'},
+    ]
+  }
 ]

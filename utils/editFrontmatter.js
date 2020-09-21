@@ -23,7 +23,7 @@ async function main() {
 
   const promptList = [{
     type: "confirm",
-    message: "批量操作frontmatter有修改数据的风险，确定要继续吗？",
+    message: chalk.yellow('批量操作frontmatter有修改数据的风险，确定要继续吗？'),
     name: "edit",
   }];
   let edit = true;
@@ -43,7 +43,12 @@ async function main() {
     return
   }
 
-  const filePath = path.join(__dirname, '..', 'docs', ...config.path); // 要批量修改的文件路径
+  if (config.path[0] !== 'docs') {
+    log(chalk.red("路径配置有误，path数组的第一个成员必须是'docs'"))
+    return
+  }
+
+  const filePath = path.join(__dirname, '..', ...config.path); // 要批量修改的文件路径
   const files = readFileList(filePath); // 读取所有md文件数据
 
   files.forEach(file => {
@@ -58,9 +63,12 @@ async function main() {
         log(chalk.yellow('未能完成删除操作，delete字段的值应该是一个数组！'))
       } else {
         config.delete.forEach(item => {
-          delete matterData[item]
+          if (matterData[item]) {
+            delete matterData[item]
+            mark = true
+          }
         })
-        mark = true
+        
       }
     }
 
@@ -70,16 +78,15 @@ async function main() {
       mark = true
     }
     
-    // 没有任何操作时跳出
-    if (!mark) {
-      return
+    // 有操作时才继续
+    if (mark) {
+      if(matterData.date && type(matterData.date) === 'date') {
+        matterData.date = repairDate(matterData.date) // 修复时间格式
+      }
+      const newData = jsonToYaml.stringify(matterData).replace(/\n\s{2}/g,"\n").replace(/"/g,"")  + '---\r\n' + fileMatterObj.content;
+      fs.writeFileSync(file.filePath, newData); // 写入
+      log(chalk.green(`update frontmatter：${file.filePath} `))
     }
 
-    if(matterData.date && type(matterData.date) === 'date') {
-      matterData.date = repairDate(matterData.date) // 修复时间格式
-    }
-    const newData = jsonToYaml.stringify(matterData).replace(/\n\s{2}/g,"\n").replace(/"/g,"")  + '---\r\n' + fileMatterObj.content;
-    fs.writeFileSync(file.filePath, newData); // 写入
-    log(`update frontmatter：${file.filePath} `)
   })
 }

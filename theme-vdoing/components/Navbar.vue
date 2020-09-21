@@ -1,5 +1,5 @@
 <template>
-  <header class="navbar">
+  <header class="navbar blur">
     <SidebarButton @toggle-sidebar="$emit('toggle-sidebar')"/>
 
     <router-link
@@ -92,6 +92,7 @@ $navbar-horizontal-padding = 1.5rem
 .navbar
   padding $navbar-vertical-padding $navbar-horizontal-padding
   line-height $navbarHeight - 1.4rem
+  transition transform 0.3s
   a, span, img
     display inline-block
   .logo
@@ -107,7 +108,6 @@ $navbar-horizontal-padding = 1.5rem
   .links
     padding-left 1.5rem
     box-sizing border-box
-    // background-color white
     white-space nowrap
     font-size 0.9rem
     position absolute
@@ -117,6 +117,16 @@ $navbar-horizontal-padding = 1.5rem
     .search-box
       flex: 0 0 auto
       vertical-align top
+
+.hide-navbar
+    .navbar
+      transform translateY(-100%)
+
+// 959
+@media (max-width: $MQNarrow)
+  .navbar
+    .site-name
+      display none
 
 @media (max-width: $MQMobile)
   .navbar
