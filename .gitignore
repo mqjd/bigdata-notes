@@ -5,6 +5,8 @@ node_modules
 # vscode
 .vscode
 
+.DS_Store
+
 # vuepress 
 docs/.vuepress/dist
 

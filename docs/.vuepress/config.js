@@ -10,7 +10,7 @@ module.exports = {
     ['meta', { name: 'keywords', content: '大数据学习、前端等学习笔记，其他感悟收集等'}],
     ['meta', { name: 'baidu-site-verification', content: 've9zCMsuxa'}],// 百度统计博主验证
     ['meta', { name: 'theme-color', content: '#11a8cd'}], // 移动浏览器主题颜色
-
+    ['script', { src: '/js/viewer.min.js', async: 'async'}]
     // 不蒜子访问量统计
     // ['script', { src: '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js', async: 'async'}]
 
@@ -93,20 +93,20 @@ module.exports = {
       //   'base64图片1',
       //   'base64图片2',
       // ]
-    }], 
-    [require('./plugins/enhanced-search'), { // 可以添加第三方搜索链接的搜索框（原官方搜索框的参数仍可用）
-      thirdparty: [ // 可选，默认 []
-        {
-          title: '在百度中搜索',
-          frontUrl: 'https://www.baidu.com/s?wd=',
-        },
-        {
-          title: '在Google中搜索',
-          frontUrl: 'https://www.google.com/search?q='
-        }
-      ]
     }],
-    'mermaidjs',
+    [require('./plugins/drawio-viewer'), {}],
+    // [require('./plugins/enhanced-search'), { // 可以添加第三方搜索链接的搜索框（原官方搜索框的参数仍可用）,增加后导致drawio viewer不可用
+    //   thirdparty: [ // 可选，默认 []
+    //     {
+    //       title: '在百度中搜索',
+    //       frontUrl: 'https://www.baidu.com/s?wd=',
+    //     },
+    //     {
+    //       title: '在Google中搜索',
+    //       frontUrl: 'https://www.google.com/search?q='
+    //     }
+    //   ]
+    // }],
     'vuepress-plugin-baidu-autopush', // 百度自动推送
     ['one-click-copy', { // 代码块复制按钮
       copySelector: ['div[class*="language-"] pre', 'div[class*="aside-code"] aside'], // String or Array
