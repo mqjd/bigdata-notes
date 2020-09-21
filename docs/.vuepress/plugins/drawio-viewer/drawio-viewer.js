@@ -22,7 +22,7 @@ const DrawioViewer = {
             "nav": true,
             "resize": true,
             "toolbar": "pages zoom layers",
-            "url": this.url
+            "url": "https://cdn.jsdelivr.net/gh/mqjd/bigdata-notes/docs/.vuepress/public/" + this.url
         }
         GraphViewer.getUrl(d.url, function(e) {
             e = mxUtils.parseXml(e);
