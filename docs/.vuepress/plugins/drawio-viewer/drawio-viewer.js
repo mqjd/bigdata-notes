@@ -14,7 +14,6 @@ const DrawioViewer = {
         })
     },
     mounted () {
-        debugger
         let renderDiv = this.$el
         var d = {
             "highlight": "#00afff",
