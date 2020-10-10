@@ -4,9 +4,13 @@ module.exports = [
   {text: '大数据',
     link: '/bigdata/',  //目录页，vdoing主题新增的配置项，有二级导航时，可以点击一级导航跳到目录页
     items: [
+      {text: 'Hadoop', link: '/hadoop/1587645313000/'},
+      {text: 'Yarn', link: '/yarn/1587645395000/'},
       {text: 'Flink', link: '/flink/1587645703000/'},
-      {text: 'Kafka', link: '/kafka/1587645504000/'},
       {text: 'HBase', link: '/hbase/1587645469000/'},
+      {text: 'Kafka', link: '/kafka/1587645504000/'},
+      {text: 'Spark', link: '/spark/1587645579000/'},
+      {text: 'Zookeeper', link: '/zookeeper/1587645608000/'},
     ]
   },
   {text: '后端', 
