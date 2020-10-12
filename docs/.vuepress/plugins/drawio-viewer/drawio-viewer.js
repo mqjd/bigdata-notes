@@ -20,8 +20,9 @@ const DrawioViewer = {
             "lightbox": false,
             "nav": true,
             "resize": true,
-            "toolbar": "pages zoom layers",
-            "url": "https://cdn.jsdelivr.net/gh/mqjd/bigdata-notes/docs/.vuepress/public/" + this.url
+            "toolbar": "pages zoom layers lightbox",
+            "url": "https://cdn.jsdelivr.net/gh/mqjd/bigdata-notes/docs/.vuepress/public/" + this.url,
+            // "url": this.url
         }
         GraphViewer.getUrl(d.url, function(e) {
             e = mxUtils.parseXml(e);
